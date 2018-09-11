@@ -1,78 +1,55 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import { asynchRequest } from '../utils/utils'
 
 Vue.use(Vuex)
 
 const state = {
   accessToken: '',
   refreshToken: '',
-  tokenState: ''
+  tokenState: '',
+  HEADERS: {
+    'Accept': 'application/json',
+    'Content-Type': 'application/json'
+  }
 }
 
 const getters = {
   retrieveToken () {
-    return state.accessToken
+    return { 'Authorization': `Bearer ${state.accessToken}` }
+  },
+  retrieveRefresh () {
+    return { 'Authorization': `Bearer ${state.refreshToken}` }
+  },
+  retrieveHeaders () {
+    return state.HEADERS
+  },
+  retrieveHeadersWithToken () {
+    return { ...getters.retrieveHeaders(), ...getters.retrieveToken() }
+  },
+  retrievieHeadersWithRefres () {
+    return { ...getters.retrieveHeaders(), ...getters.retrieveRefresh() }
   }
 }
 
-const HEADERS = {
-  'Accept': 'application/json',
-  'Content-Type': 'application/json'
-}
-
 const actions = {
-  requestInitialTokens ({ commit }, params) {
-    return new Promise((resolve, reject) => {
-      fetch(params.url, {
-        method: 'post',
-        headers: HEADERS,
-        body: JSON.stringify(params.credentialsDict)
-      }).then(response => {
-        this.tokenState = 'requesting'
-        // eslint-disable-next-line
-        if (response.status == 200) {
-          this.hasError = false
-        } else {
-          this.hasError = true
-        }
-        return response.json()
-      }).then(data => {
-        if (this.hasError) {
-          return reject(data.errors[0])
-        } else {
-          commit('setAccessToken', data.access_token)
-          commit('setRefreshToken', data.refresh_token)
-          commit('setTokenStatus', 'set')
-          resolve()
-        }
-      })
+  requestInitialTokens ({ commit }, { url, credentialsDict }) {
+    return asynchRequest(url, getters.retrieveHeaders(), credentialsDict).then(data => {
+      commit('setAccessToken', data.access_token)
+      commit('setRefreshToken', data.refresh_token)
+      commit('setTokenStatus', 'set')
+      return Promise.resolve()
+    }).catch(data => {
+      return Promise.reject(data)
     })
   },
-  refreshAccessToken ({ commit }, params) {
-    return new Promise((resolve, reject) => {
-      fetch(params.url, {
-        method: 'put',
-        headers: { ...HEADERS, 'Authorization': 'Bearer ' + state.refreshToken },
-        body: '{}'
-      }).then(response => {
-        this.tokenState = 'requesting'
-        // eslint-disable-next-line
-        if (response.status == 200) {
-          this.hasError = false
-        } else {
-          this.hasError = true
-        }
-        return response.json()
-      }).then(data => {
-        if (this.hasError) {
-          console.log(data)
-          return reject(data)
-        } else {
-          commit('setAccessToken', data.access_token)
-          commit('setTokenStatus', 'set')
-          resolve()
-        }
-      })
+  refreshAccessToken ({ commit }, { url }) {
+    return asynchRequest(url, getters.retrievieHeadersWithRefres(), '', 'put').then(data => {
+      commit('setAccessToken', data.access_token)
+      commit('setTokenStatus', 'set')
+      return Promise.resolve()
+    }).catch(data => {
+      return Promise.reject(data)
     })
   }
 }

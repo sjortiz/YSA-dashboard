@@ -37,6 +37,8 @@
   }
 </style>
 <script>
+import { asynchRequest } from '../utils/utils'
+
 export default {
   props: {
     msg: {
@@ -50,25 +52,27 @@ export default {
     }
   },
   methods: {
-    createApp: function () {
-      fetch(`http://localhost:8080/app/${this.appName}`, {
-        method: 'post',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + this.$store.state.accessToken
-        }
-      }).then(response => {
-        console.log(response)
+    createApp () {
+      asynchRequest(
+        `http://localhost:8080/app/${this.appName}`,
+        { ...this.$store.getters.retrieveHeadersWithToken }
+      ).then(data => {
+        this.appName = ''
+      }).catch(error => {
         // eslint-disable-next-line
-        if (response.status == 410) {
-          this.$store.dispatch('refreshAccessToken')
+        if (error.status == 401) {
+          this.$store.dispatch('refreshAccessToken', { url: 'http://localhost:8080/login' }).then(() => {
+            asynchRequest(
+              `http://localhost:8080/app/${this.appName}`,
+              { ...this.$store.getters.retrieveHeadersWithToken }
+            ).then(data => {
+              this.appName = ''
+            }).catch(error => {
+              console.log(error)
+            })
+          })
         }
-        return response.json()
-      }).then(data => {
-        console.log(data)
       })
-      this.appName = ''
     }
   }
 }

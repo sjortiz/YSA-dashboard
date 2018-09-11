@@ -12,6 +12,9 @@
           <router-link to='/dashboard/apps'>Apps</router-link>
         </li>
         <li>
+          <router-link to='/dashboard/groups'>Groups</router-link>
+        </li>
+        <li>
           <router-link to='features'>Features</router-link>
         </li>
         <li>

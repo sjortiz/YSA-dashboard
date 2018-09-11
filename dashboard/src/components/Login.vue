@@ -64,13 +64,9 @@ export default {
       message: this.msg,
       email: '',
       password: '',
-      access_token: '',
-      refresh_token: '',
       hasError: false,
       errorTitle: '',
-      errorDetail: '',
-      // Can be null, requesting, set
-      tokenState: null
+      errorDetail: ''
     }
   },
   computed: {
@@ -79,16 +75,11 @@ export default {
     }
   },
   methods: {
-    removeTokens: function () {
-      this.refresh_token = ''
-      this.access_token = ''
-      this.tokenState = null
-    },
     login: function () {
       this.$store.dispatch('requestInitialTokens', {
         url: url,
         credentialsDict: this.credentialsDict
-      }).then(() => {
+      }).then((data) => {
         this.$router.push('dashboard')
       }).catch(error => {
         console.log(error)
