@@ -33,6 +33,26 @@ a {
   color: black;
 }
 
+form {
+  margin: 10% auto;
+  width: 20%;
+  min-width: 332px;
+  border: 2px solid black;
+  box-shadow: 0px 2px 10px 0px gray;
+}
+label {
+  display: inline-block;
+  width: 100%;
+  padding-bottom: 10px;
+  padding-top: 10px;
+  font-weight: bold;
+}
+input {
+  width: 80%;
+  min-height: 30px;
+  font-size: 20px;
+}
+
 .full-bar {
   display: block;
   padding-top: 20px;

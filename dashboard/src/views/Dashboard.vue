@@ -15,10 +15,10 @@
           <router-link to='/dashboard/groups'>Groups</router-link>
         </li>
         <li>
-          <router-link to='features'>Features</router-link>
+          <router-link to='/dashboard/features'>Features</router-link>
         </li>
         <li>
-          <router-link to='users'>Users</router-link>
+          <router-link to='/dashboard/users'>Users</router-link>
         </li>
       </ul>
     </nav>

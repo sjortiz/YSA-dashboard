@@ -20,12 +20,20 @@ export default new Router({
           component: () => import('@/components/HomeDashboard.vue')
         },
         {
-          path: 'apps',
-          component: () => import('@/components/Apps.vue')
+          path: ':entity',
+          component: () => import('@/components/entitiesFeed.vue')
         },
         {
           path: 'apps/new',
           component: () => import('@/components/CreateApp.vue')
+        },
+        {
+          path: 'groups/new',
+          component: () => import('@/components/CreateGroup.vue')
+        },
+        {
+          path: 'features/new',
+          component: () => import('@/components/CreateFeature.vue')
         }
       ]
     },

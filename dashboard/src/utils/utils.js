@@ -1,10 +1,15 @@
 // module 'utils.js'
 function asynchRequest (URL, HEADERS = {}, BODY = '', METHOD = 'post') {
-  return fetch(URL, {
-    method: METHOD,
-    headers: HEADERS,
-    body: JSON.stringify(BODY)
-  }).then(async response => {
+  let request = {
+    method: METHOD.toLowerCase(),
+    headers: HEADERS
+  }
+
+  if (request.method !== 'get') {
+    request.body = JSON.stringify(BODY)
+  }
+
+  return fetch(URL, request).then(async response => {
     let data = await response.json()
 
     data = {
@@ -14,7 +19,7 @@ function asynchRequest (URL, HEADERS = {}, BODY = '', METHOD = 'post') {
     }
 
     // eslint-disable-next-line
-    if (response.status == 200) {
+    if (response.status == 200 || response.status == 201) {
       return Promise.resolve(data)
     } else {
       return Promise.reject(data)
