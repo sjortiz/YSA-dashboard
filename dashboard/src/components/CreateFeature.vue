@@ -8,7 +8,7 @@
 
       <label for="groupName">Group name</label>
       <select name="groupName" id="groupName" v-model="groupName" tabindex="1" required >
-        <option v-for="group in groups" :value="group.name" :key="group.name">{{app.app}} -- {{app.name}}</option>
+        <option v-for="group in groups" :value="group.name" :key="group.name">{{group.app}} -- {{group.name}}</option>
       </select>
 
       <label for="featureName">Feature name</label>
@@ -57,6 +57,7 @@ export default {
       null,
       'GET'
     ).then(data => {
+      console.log(data)
       this.groups = data.data
     }).catch(error => {
       console.log(error)

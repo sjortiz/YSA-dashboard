@@ -7,10 +7,12 @@
       <span class="full-bar">{{entity}}</span>
     </div>
     <div class="boxes">
-      <div class="medium-bar bordered-right" v-for="object in objects" :key=object.id>
+      <div class="medium-bar bordered-right" v-for="(object, index) in objects" :key=object.name>
         <label for="">{{object.name}}</label>
-        <div v-if="object.status !== null && object.status !== undefined">
-          {{object.status ? 'enabled': 'disbled' }}
+        <div v-if="entity == 'features'">
+          <button @click="toggleEntity(index, object.group, object.name)">
+            {{object.status ? 'Hit me to disable': 'Hit me to enable' }}
+          </button>
         </div>
       </div>
     </div>
@@ -50,7 +52,7 @@ label {
 </style>
 
 <script>
-import { asynchRequest } from '../utils/utils'
+import { asynchRequest, retryRequestIfToken } from '../utils/utils'
 
 export default {
   data () {
@@ -66,6 +68,20 @@ export default {
     }
   },
   methods: {
+    toggleEntity (index, group, feature) {
+      let url = `http://localhost:8080/status/${group}/${feature}`
+      retryRequestIfToken(
+        url,
+        { ...this.$store.getters.retrieveHeadersWithToken },
+        null,
+        'put'
+      ).then(data => {
+        console.log(data)
+        this.$set(this.objects, index, data.data)
+      }).catch(error => {
+        console.log(error)
+      })
+    },
     fillComponent (entity) {
       this.entity = entity
       asynchRequest(
