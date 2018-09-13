@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import { asynchRequest } from '../utils/utils'
+import { asynchRequest, retryRequestIfToken } from '../utils/utils'
 
 export default {
   props: {
@@ -39,27 +39,13 @@ export default {
   methods: {
     createGroup () {
       let targetUrl = `http://localhost:8080/feature/${this.groupName}/${this.featureName}`
-      asynchRequest(
+      retryRequestIfToken(
         targetUrl,
         { ...this.$store.getters.retrieveHeadersWithToken }
       ).then(data => {
-        this.appName = ''
         this.groupName = ''
+        this.featureName = ''
       }).catch(error => {
-        // eslint-disable-next-line
-        if (error.status == 401) {
-          this.$store.dispatch('refreshAccessToken', { url: 'http://localhost:8080/login' }).then(() => {
-            asynchRequest(
-              targetUrl,
-              { ...this.$store.getters.retrieveHeadersWithToken }
-            ).then(data => {
-              this.groupName = ''
-              this.featureName = ''
-            }).catch(error => {
-              console.log(error)
-            })
-          })
-        }
         console.log(error)
       })
     }

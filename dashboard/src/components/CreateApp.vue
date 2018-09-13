@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import { asynchRequest } from '../utils/utils'
+import { retryRequestIfToken } from '../utils/utils'
 
 export default {
   props: {
@@ -31,25 +31,14 @@ export default {
   },
   methods: {
     createApp () {
-      asynchRequest(
-        `http://localhost:8080/app/${this.appName}`,
+      let targetUrl = `http://localhost:8080/app/${this.appName}`
+      retryRequestIfToken(
+        targetUrl,
         { ...this.$store.getters.retrieveHeadersWithToken }
       ).then(data => {
         this.appName = ''
       }).catch(error => {
-        // eslint-disable-next-line
-        if (error.status == 401) {
-          this.$store.dispatch('refreshAccessToken', { url: 'http://localhost:8080/login' }).then(() => {
-            asynchRequest(
-              `http://localhost:8080/app/${this.appName}`,
-              { ...this.$store.getters.retrieveHeadersWithToken }
-            ).then(data => {
-              this.appName = ''
-            }).catch(error => {
-              console.log(error)
-            })
-          })
-        }
+        console.log(error)
       })
     }
   }
