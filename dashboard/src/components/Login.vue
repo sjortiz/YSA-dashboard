@@ -1,48 +1,41 @@
 <template>
-  <div class="login_fields">
 
-    <form @submit.prevent="login">
+  <form @submit.prevent="login">
 
-      <h1>{{message}}</h1>
+    <h1>LogIn</h1>
 
-      <label for="email">Email</label>
-      <input type="email" v-model="email" name="email" id="email" tabindex="1" required />
+    <label for="email">Email</label>
+    <input type="email" v-model="email" name="email" id="email" tabindex="1" required />
 
-      <label for="password">Password</label>
-      <input type="password" v-model="password" name="password" id="password" tabindex="2" required />
+    <label for="password">Password</label>
+    <input type="password" v-model="password" name="password" id="password" tabindex="2" required />
 
-      <input type="submit" value="You know what to do!" tabindex="3" />
+    <input type="submit" value="LogIn" tabindex="3" />
 
-    </form>
-
-  </div>
+  </form>
 
 </template>
 
 <style scoped>
-
   form {
-    margin: 10% auto;
-    width: 20%;
+    margin: 5% auto;
+    width: 15%;
     min-width: 332px;
-    border: 2px solid black;
-    box-shadow: 0px 2px 10px 0px gray;
   }
   label {
-    display: inline-block;
     width: 100%;
-    padding-bottom: 10px;
-    padding-top: 10px;
+    margin-top: 20px;
+    font-size: 25px;
     font-weight: bold;
   }
   input {
-    width: 80%;
-    min-height: 30px;
-    font-size: 20px;
+    margin-bottom: 25px;
   }
   input[type=submit] {
-    width: 45%;
-    font-size: 0.8em;
+    width: 40%;
+    font-size: 1.8em;
+    padding-top: 10px;
+    padding-bottom: 10px;
   }
 
 </style>
@@ -54,14 +47,9 @@ const url = 'http://localhost:8080/login'
 export default {
   name: 'Login',
   props: {
-    msg: {
-      type: String,
-      default: 'Login'
-    }
   },
   data () {
     return {
-      message: this.msg,
       email: '',
       password: '',
       hasError: false,

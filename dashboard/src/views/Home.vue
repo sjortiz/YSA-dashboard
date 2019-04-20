@@ -1,10 +1,6 @@
+# TODO: Verify is there is a token and it is valid, if not send to login
 <template>
   <div class="home">
-
-    <div class="links">
-      <router-link to='about'>About</router-link>
-    </div>
-
     <Login :storage="storage"> </Login>
   </div>
 </template>
@@ -27,23 +23,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-
-  .links {
-    margin: 0 20px 0 0;
-    padding: 0;
-    text-align: right;
-  }
-
-  .links a {
-    font-weight: bold;
-    text-decoration: none;
-    color: #2c3e50;
-  }
-
-  .links a.router-link-exact-active {
-    color: #42b983;
-  }
-
-</style>

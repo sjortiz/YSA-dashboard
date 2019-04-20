@@ -12,7 +12,7 @@
       </select>
 
       <label for="groupName">Group name</label>
-      <input type="text" v-model="groupName" name="groupName" id="groupName" tabindex="1" required />
+      <input type="text" v-model="groupName" name="groupName" id="groupName" tabindex="2" required />
 
       <input type="submit" value="You know what to do!" tabindex="3" />
     </form>

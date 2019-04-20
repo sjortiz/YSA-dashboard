@@ -5,17 +5,17 @@
         <span>YSA</span>
       </aside>
       <ul>
-        <li class="first">
+        <li>
           <router-link to='/dashboard'>Home</router-link>
         </li>
         <li>
-          <router-link to='/dashboard/apps'>Apps</router-link>
-        </li>
-        <li>
-          <router-link to='/dashboard/groups'>Groups</router-link>
-        </li>
-        <li>
           <router-link to='/dashboard/features'>Features</router-link>
+        </li>
+        <li>
+          <router-link to='/dashboard/workspaces'>Workspaces</router-link>
+        </li>
+        <li>
+          <router-link to='/dashboard/apps'>Applications</router-link>
         </li>
         <li>
           <router-link to='/dashboard/users'>Users</router-link>
@@ -33,10 +33,15 @@
     font-weight: bold;
     margin-top: 2px;
   }
+  span {
+    color: black;
+  }
   nav {
+    background-color: white;
     margin-top: 0;
     padding-top: 0;
     display: block;
+    color: black;
   }
   ul {
     margin: 0;
@@ -46,20 +51,14 @@
   }
   li {
     text-align: center;
-    width: 10%;
-    min-width: 90px;
+    padding-right: 1%;
     display: inline-block;
-    margin-top: 0;
-    margin-bottom: -6px;
-    padding: 0;
     font-size: 20px;
-    overflow: hidden;
-    border-right: 1px solid black;
-  }
-  li.first {
-    border-left: 1px solid black;
   }
   nav a:hover {
     text-decoration: underline;
+  }
+  a {
+    color: black;
   }
 </style>
